@@ -1,11 +1,12 @@
+FLASH_SIZE	:= 4MB
 # enable submodules
-SUBMODULES 	= 0
+SUBMODULES 	= 1
 
 #**********************************************************************
 ifeq (1, $(SUBMODULES))
 
 
-LOCAL_TARGET	:= http_write
+LOCAL_TARGET	:= tcp
 
 LOCAL_BASE	:= $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 BUILD_BASE	:= $(PROJECT_BASE)/build/$(LOCAL_TARGET)

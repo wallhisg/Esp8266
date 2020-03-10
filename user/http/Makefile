@@ -1,5 +1,5 @@
 # enable submodules
-SUBMODULES 	:= 1
+SUBMODULES 	:= 0
 
 ifeq (1, $(SUBMODULES))
 

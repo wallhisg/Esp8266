@@ -202,8 +202,8 @@ void  tx_start_uart_buffer(uint8 uart_no);
 uint16  rx_buff_deq(char* pdata, uint16 data_len );
 void  Uart_rx_buff_enq();
 #endif
-void  uart_rx_intr_enable(uint8 uart_no);
-void  uart_rx_intr_disable(uint8 uart_no);
+void uart_rx_intr_enable(uint8 uart_no);
+void uart_rx_intr_disable(uint8 uart_no);
 void uart0_tx_buffer(uint8 *buf, uint16 len);
 void uart1_write_char(char c);
 //===========================================

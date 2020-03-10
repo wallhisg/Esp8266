@@ -1,5 +1,6 @@
 #include <tcp_server.h>
 #include <connection.h>
+#include <http_response.h>
 
 //LOCAL struct espconn esp_conn;
 //LOCAL esp_tcp esptcp;
@@ -14,6 +15,9 @@ LOCAL void ICACHE_FLASH_ATTR tcp_server_recon_cb(void *arg, sint8 err);
 LOCAL void ICACHE_FLASH_ATTR tcp_server_listen(void *arg);
 
 extern void ICACHE_FLASH_ATTR uart1_write_char(char c);
+
+tcp_server_recv_forward tcp_server_recv_forward_ = NULL;
+
 /********************************************************************
  * FunctionName : tcp_server_init
  * Description  : parameter initialize as a TCP server
@@ -24,7 +28,7 @@ void ICACHE_FLASH_ATTR
 tcp_server_init(uint32 port)
 {
     os_printf("tcp_server_init.\r\n");
-
+ 
     tcp_connection_init(&serverConn.conn, &serverConn.tcp);
     serverConn.conn.proto.tcp->local_port = port;
     
@@ -58,17 +62,33 @@ tcp_server_sent_cb(void *arg)
 LOCAL void ICACHE_FLASH_ATTR
 tcp_server_recv_cb(void *arg, char *pusrdata, unsigned short length)
 {
-   //received some data from tcp connection
+    //received some data from tcp connection
+    os_printf("tcp_server_recv_cb\r\n");
+    struct espconn *pespconn = arg;
+    os_printf("tcp recv : %s \r\n", pusrdata);
+    uart1_sendStr_no_wait("abcdEFGH\r\n");
     
-   struct espconn *pespconn = arg;
-   os_printf("tcp recv : %s \r\n", pusrdata);
-    uart1_sendStr_no_wait(pusrdata);
-   //espconn_sent(pespconn, pusrdata, length);
-   espconn_sent(pespconn, "<body>Hello, World!</body>", 26);
-   espconn_disconnect(pespconn);
-    
+    // forward tcp_server_recv_cb den con tro ham khac
+    // dung thay doi con tro ham khi goi cac doan ma html khac nhau
+    if(tcp_server_recv_forward_ != NULL)
+    {
+        tcp_server_recv_forward_(arg, pusrdata, length);
+    }
+    espconn_disconnect(pespconn);
 }
- 
+
+/********************************************************************
+ * FunctionName : set_tcp_server_recv_cb
+ * Description  : doi con tro ham de thay doi noi dung trang web can hien thi
+ * Parameters   : func -- con tro ham 
+ * Returns      : none
+*********************************************************************/
+void ICACHE_FLASH_ATTR 
+tcp_server_set_recv_forward(tcp_server_recv_forward func)
+{
+     tcp_server_recv_forward_ = func;
+}
+
 /********************************************************************
  * FunctionName : tcp_server_discon_cb
  * Description  : disconnect callback.

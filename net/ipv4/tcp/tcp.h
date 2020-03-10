@@ -16,7 +16,7 @@
 #define SSID 		"Wireless"
 #define PASSWORD 	"12345678abcd"
 
-#define TCP_LOCAL_SERVER_PORT     1112
+#define TCP_LOCAL_SERVER_PORT     8080
 
 // remote IP of TCP server
 #define IP_REMOTE_OCTET_1   192

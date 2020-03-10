@@ -54,7 +54,7 @@ exit_led_init:
 
 ssize_t led_open(struct inode *inode, struct file *file)
 {
-    kdebug(DBG_LED, "\tled open.\r\n");
+//     kdebug(DBG_LED, "\tled open.\r\n");
     ssize_t ret = 0;
 
     struct led_device *led_devp;
@@ -80,7 +80,7 @@ ssize_t led_read(struct file *file, char *buf, rsize_t count)
 
 ssize_t led_write(struct file *file, char *buf, rsize_t count)
 {
-    kdebug(DBG_LED, "\tled_write.\r\n");
+//     kdebug(DBG_LED, "\tled_write.\r\n");
     ssize_t ret = 0;
 
     struct led_device *led_devp = file->private_data;
@@ -95,7 +95,7 @@ ssize_t led_write(struct file *file, char *buf, rsize_t count)
     if (kbuf == '1')
     {
         led_devp->state = LED_ON;
-        kdebug(DBG_LED, "\tled_write ON: %d\r\n", kbuf);
+//         kdebug(DBG_LED, "\tled_write ON: %d\r\n", kbuf);
         gpio_output_set(0, BIT2, BIT2, 0);
         *buf = '0';
 
@@ -103,7 +103,7 @@ ssize_t led_write(struct file *file, char *buf, rsize_t count)
     else if (kbuf == '0')
     {
         led_devp->state = LED_OFF;
-        kdebug(DBG_LED, "\tled_write OFF: %d\r\n", kbuf);
+//         kdebug(DBG_LED, "\tled_write OFF: %d\r\n", kbuf);
         gpio_output_set(BIT2, 0, BIT2, 0);
         *buf = '1';
     }

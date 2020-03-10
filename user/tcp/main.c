@@ -16,6 +16,10 @@
 #include <types.h>
 #include <led.h>
 
+#include "http_page.h"
+
+extern tcp_server_recv_forward tcp_server_recv_forward_;
+
 static bool flagtr = true;
 static os_timer_t led_timer;
 static int led_value = 0;
@@ -23,21 +27,6 @@ static int led_value = 0;
 static struct inode inode;
 static struct file file;
 static char wbuf = '1';
-
-void ICACHE_FLASH_ATTR
-uart1_write_char(char c)
-{
-    if (c == '\n'){
-        uart_tx_one_char(UART1, '\r');
-        uart_tx_one_char(UART1, '\n');
-    }else if (c == '\r'){
-    
-    }else{
-        uart_tx_one_char(UART1, c);
-    }
-
-}
-
 
 void led_service_cb(void *args)
 {
@@ -49,10 +38,10 @@ void led_service_cb(void *args)
     inode.i_fop->write(&file, &wbuf, 0);
     
 
-    kprintf("Blink\r\n");
-    
+    kprintf("Blink\r\n");  
 
 }
+
 void app_init()
 {
     // init uart
@@ -66,12 +55,17 @@ void app_init()
     os_timer_setfn(&led_timer, (os_timer_func_t *)led_service_cb, NULL);
     os_timer_arm(&led_timer, 1000, 1);
     
+    
+    // set tcp_server_recv_cb_ pointer;
     // init tcp
     //Set  station mode 
     wifi_set_opmode(STATIONAP_MODE); 
 
     // ESP8266 connect to router.
     set_station_config();
+    
+//     tcp_server_recv_cb_ = tcp_server_recv_cb_response;
+    tcp_server_set_recv_forward(tcp_server_recv_cb_response);
 
     display_heap();
 }

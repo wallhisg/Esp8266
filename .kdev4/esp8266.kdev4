@@ -323,3 +323,6 @@ isExecutable=true
 Default Target=all
 Number Of Jobs=1
 Override Number Of Jobs=true
+
+[Project]
+VersionControlSupport=kdevgit

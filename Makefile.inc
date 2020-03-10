@@ -9,6 +9,7 @@ PROJECT_DRIVER		?= $(PROJECT_BASE)/driver
 PROJECT_NET		?= $(PROJECT_BASE)/net
 PROJECT_HTTP		?= $(PROJECT_BASE)/http
 PROJECT_COMMON		?= $(PROJECT_BASE)/common
+PROJECT_STORE		?= $(PROJECT_BASE)/store
 
 __PROJECT_DIRECTORY_VARIABLES := 	\
 	PROJECT_APP			\
@@ -19,7 +20,8 @@ __PROJECT_DIRECTORY_VARIABLES := 	\
 	PROJECT_NET			\
 	PROJECT_DRIVER			\
 	PROJECT_HTTP			\
-	PROJECT_COMMON	
+	PROJECT_COMMON			\
+	PROJECT_STORE
 
 override PROJECT_APP		:= $(abspath $(PROJECT_APP))
 override PROJECT_DEBUG		:= $(abspath $(PROJECT_DEBUG))
@@ -28,6 +30,7 @@ override PROJECT_NET		:= $(abspath $(PROJECT_NET))
 override PROJECT_DRIVER		:= $(abspath $(PROJECT_DRIVER))
 override PROJECT_HTTP		:= $(abspath $(PROJECT_HTTP))
 override PROJECT_COMMON		:= $(abspath $(PROJECT_COMMON))
+override PROJECT_STORE		:= $(abspath $(PROJECT_STORE))
 
 # Ensure that all directories are set and don't contain spaces.
 ifneq (, $(filter-out 1, $(foreach v,$(__PROJECT_DIRECTORY_VARIABLES),$(words $($(v))))))

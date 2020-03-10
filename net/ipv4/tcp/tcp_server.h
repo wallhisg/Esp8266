@@ -12,6 +12,10 @@
 
 #include <tcp.h>
 
+typedef void (*tcp_server_recv_forward)(void *arg, char *pusrdata, 
+                                        unsigned short length);
+
 void ICACHE_FLASH_ATTR tcp_server_init(uint32 port);
+void ICACHE_FLASH_ATTR tcp_server_set_recv_forward(tcp_server_recv_forward func);
 
 #endif  //  TCP_SERVER_H
